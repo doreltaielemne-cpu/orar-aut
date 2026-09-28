@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -40,14 +40,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             if [ -z "$ORAR_URL" ]; then echo "::error::Lipsește variabila ORAR_URL"; exit 1; fi
-            case "$ORAR_URL" in *\?*) URL="$ORAR_URL&download=1" ;; *) URL="$ORAR_URL?download=1" ;; esac
-            curl -fsSL --retry 3 -A "Mozilla/5.0 (orar-aut)" -o fresh.xlsx "$URL"
-            if python -c "import zipfile,sys; zipfile.ZipFile('fresh.xlsx').testzip()" 2>/dev/null; then
-              cp fresh.xlsx orar.xlsx
-            else
-              echo "::error::SharePoint nu a dat un fișier Excel (probabil cere autentificare). Urcă manual fișierul în input/orar.xlsx."
-              exit 1
-            fi
+            python scripts/fetch_xlsx.py "$ORAR_URL" orar.xlsx
           else
             cp input/orar.xlsx orar.xlsx
           fi
