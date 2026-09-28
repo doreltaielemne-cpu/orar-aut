@@ -1,0 +1,85 @@
+name: Actualizează orarul
+
+on:
+  schedule:
+    # la fiecare oră între ~7 și ~22 (ora României), luni-vineri; de două ori pe zi în weekend
+    - cron: "23 4-19 * * 1-5"
+    - cron: "23 6,16 * * 0,6"
+  push:
+    paths:
+      - "input/orar.xlsx"
+      - "site/**"
+      - "scripts/**"
+      - "config.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: orar
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalează dependențele
+        run: pip install openpyxl==3.1.5
+
+      - name: Ia orarul oficial
+        env:
+          ORAR_URL: ${{ vars.ORAR_URL }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -z "$ORAR_URL" ]; then echo "::error::Lipsește variabila ORAR_URL"; exit 1; fi
+            case "$ORAR_URL" in *\?*) URL="$ORAR_URL&download=1" ;; *) URL="$ORAR_URL?download=1" ;; esac
+            curl -fsSL --retry 3 -A "Mozilla/5.0 (orar-aut)" -o fresh.xlsx "$URL"
+            if python -c "import zipfile,sys; zipfile.ZipFile('fresh.xlsx').testzip()" 2>/dev/null; then
+              cp fresh.xlsx orar.xlsx
+            else
+              echo "::error::SharePoint nu a dat un fișier Excel (probabil cere autentificare). Urcă manual fișierul în input/orar.xlsx."
+              exit 1
+            fi
+          else
+            cp input/orar.xlsx orar.xlsx
+          fi
+
+      - name: Construiește site-ul
+        run: python scripts/build_site.py orar.xlsx dist --previous data/last.json
+
+      - name: S-a schimbat ceva?
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || ! cmp -s dist/data.json data/last.json; then
+            echo "yes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "yes=false" >> "$GITHUB_OUTPUT"
+            echo "Orarul oficial nu s-a schimbat. Nu public nimic."
+          fi
+
+      - name: Publică pe Cloudflare Pages
+        if: steps.changed.outputs.yes == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CF_PROJECT }} --branch=main --commit-dirty=true
+
+      - name: Salvează versiunea publicată
+        if: steps.changed.outputs.yes == 'true'
+        run: |
+          cp dist/data.json data/last.json
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then cp orar.xlsx input/orar.xlsx; fi
+          git config user.name "orar-bot"
+          git config user.email "orar-bot@users.noreply.github.com"
+          git add data/last.json input/orar.xlsx
+          git diff --cached --quiet || git commit -m "Orar actualizat: $(python -c "import json;print(json.load(open('data/last.json'))['meta']['updated'])")"
+          git push
