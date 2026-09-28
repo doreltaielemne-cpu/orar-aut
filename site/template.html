@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="ro" data-skin="grafit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orar Automatică UTCN</title>
+<meta name="description" content="Orarul tuturor grupelor de la Automatică și Informatică Aplicată (UTCN), semestrul I 2026–2027. Alegi grupa, semigrupa și săptămâna.">
+<meta property="og:title" content="Orar Automatică UTCN">
+<meta property="og:description" content="Semestrul I 2026–2027. Alegi grupa, semigrupa și săptămâna și vezi doar orele tale.">
+<meta name="theme-color" content="#0F1011">
+<meta name="color-scheme" content="dark">
+<!--PWA--><link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orar AUT">
+<meta name="mobile-web-app-capable" content="yes"><!--/PWA-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Grafit: neutral greys; violet for headings and anything selectable; one distinct hue per class type
+   (curs = albastru, seminar = galben, laborator = verde). Blocks use a dark tinted fill + a bright left bar. */
+:root{
+  color-scheme:dark;
+  --bg:#0F1011; --panel:#17181A; --panel-2:#1F2023; --line:#2A2C30; --line-2:#3B3E43;
+  --text:#EDEEF0; --muted:#B6BAC1; --faint:#8D929A;
+  --accent:#6E5BD6; --on-accent:#FFFFFF; --accent-text:#A99DFF;
+  --c-bg:#15263D; --c-fg:#DDEBFF; --c-bar:#4C9AFF;
+  --s-bg:#33280F; --s-fg:#FFEFC9; --s-bar:#F2B33D;
+  --l-bg:#123020; --l-fg:#D5F5E3; --l-bar:#3DBE7A;
+  --p-bar:#C9CDD3; --dot:#555A62; --today-col:#17191C;
+}
+:root{
+  --sans:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --hour:46px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45;padding-inline:16px;padding-block:18px 56px;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.narrow{max-width:760px;width:100%;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
+a{color:var(--accent-text)}
+button,select{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+
+/* header */
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 16px;border-bottom:3px solid var(--accent);padding-bottom:12px}
+.brand{display:flex;flex-direction:column;gap:4px;min-width:0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:40px;line-height:1;margin:0;font-weight:800;font-stretch:78%;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--accent-text)}
+.sub{color:var(--muted);margin:0;font-size:14.5px}
+.stamp{font-family:var(--mono);font-size:11.5px;color:var(--faint);text-align:right;line-height:1.4}
+.stamp b{color:var(--muted);font-weight:500}
+
+/* install */
+.install{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--accent);border-radius:10px;padding:10px 12px}
+.install p{margin:0;flex:1;min-width:190px;font-size:14px;color:var(--on-accent)}
+.install b{color:var(--on-accent)}
+.install .x{border:0;background:transparent;color:var(--on-accent);font-size:20px;cursor:pointer;padding:2px 8px}
+
+/* controls */
+.controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}
+@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr) auto;position:static;border-bottom:0}
+  .days-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--bg);padding-block:8px;margin-block:-8px}}
+.controls>*{min-width:0}
+.box{display:flex;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;min-width:0}
+.box label,.lbl{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;padding-inline:8px 2px}
+select{appearance:none;-webkit-appearance:none;flex:1;min-width:0;border:0;background:transparent;font-weight:700;font-size:15px;padding:8px 26px 8px 4px;border-radius:7px;cursor:pointer;color:var(--text);
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+select option,select optgroup{background:var(--panel-2);color:var(--text)}
+.seg button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:14px;padding:8px 14px;border-radius:7px;cursor:pointer;min-width:42px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.seg .only{color:var(--faint);font-size:13px;padding-inline:6px 10px}
+.weekbox{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
+.weekbox>*{min-width:0}
+@media (max-width:760px){.weekbox{grid-template-columns:minmax(0,1fr) auto}.weekbox .view{grid-column:1/-1}.view button{flex:1}}
+.navbtn{border:0;background:transparent;color:var(--text);font-size:19px;font-weight:700;width:40px;height:38px;border-radius:7px;cursor:pointer}
+.navbtn:hover{background:var(--panel-2)}
+.navbtn:disabled{opacity:.3;cursor:default}
+.wk select{text-align:center;text-align-last:center;font-size:14.5px}
+.parity{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--accent);color:var(--on-accent);text-transform:uppercase;letter-spacing:.05em;vertical-align:1px}
+
+/* notice */
+.notice{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.notice b{color:var(--text)}
+.notice .warn{color:var(--accent-text)}
+
+/* day seek bar */
+.days-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.dbtn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 4px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.dbtn .dn{font-weight:800;font-size:15px;font-stretch:85%}
+.dbtn .dd{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.dbtn .dots{display:flex;gap:3px;height:6px;margin-top:3px}
+.dbtn .dots i{width:5px;height:5px;border-radius:50%;background:var(--dot)}
+.dbtn[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.dbtn[aria-selected="true"] .dd{color:var(--on-accent);opacity:.85}
+.dbtn[aria-selected="true"] .dots i{background:var(--on-accent)}
+.dbtn.today{border-color:var(--accent-text);box-shadow:inset 0 0 0 1px var(--accent-text)}
+.dbtn.off{opacity:.5}
+
+/* day list */
+.daycard{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:pan-y}
+.day-h{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px;border-bottom:1px solid var(--line)}
+.day-h h2{margin:0;font-size:22px;font-weight:800;font-stretch:80%}
+.day-h .date{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.ev{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.ev:last-child{border-bottom:0}
+a.ev{color:inherit;text-decoration:none;cursor:pointer;transition:background .15s}
+a.ev:hover,a.ev:active{background:var(--panel-2)}
+.maplink{display:inline-flex;align-self:flex-start;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--accent-text);border:1px solid var(--line-2);border-radius:999px;padding:2px 10px;margin-top:2px}
+a.ev:hover .maplink{border-color:var(--accent-text)}
+.t{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;line-height:1.25}
+.t small{display:block;color:var(--faint);font-weight:400}
+.what{display:flex;flex-direction:column;gap:4px;min-width:0;border-left:3px solid var(--faint);padding-left:11px}
+.what.C{border-color:var(--c-bar)} .what.S{border-color:var(--s-bar)} .what.L{border-color:var(--l-bar)} .what.P{border-color:var(--p-bar)}
+.title{font-weight:700;font-size:16px;line-height:1.3;display:flex;flex-wrap:wrap;gap:6px;align-items:center;overflow-wrap:anywhere}
+.chip{font-family:var(--mono);font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.chip.C{background:var(--c-bg);color:var(--c-fg);box-shadow:inset 0 0 0 1px var(--c-bar)}
+.chip.S{background:var(--s-bg);color:var(--s-fg);box-shadow:inset 0 0 0 1px var(--s-bar)}
+.chip.L{background:var(--l-bg);color:var(--l-fg);box-shadow:inset 0 0 0 1px var(--l-bar)}
+.chip.P{border:1px solid var(--p-bar);color:var(--text)}
+.chip.X,.chip.SP{border:1px dashed var(--faint);color:var(--muted)}
+.meta{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.meta b{color:var(--text);font-weight:600}
+.raw{font-family:var(--mono);font-size:12.5px;color:var(--faint)}
+.note{font-size:13px;color:var(--accent-text)}
+.ev.opt .title{color:var(--muted)}
+.ev.opt .what{border-left-style:dashed}
+.empty{padding:18px 14px;color:var(--faint);font-style:italic}
+
+/* week grid */
+.weekwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.wgrid{display:grid;grid-template-columns:48px repeat(5,minmax(128px,1fr));min-width:700px;position:relative}
+.wh{position:sticky;top:0;z-index:2;background:var(--panel-2);border-bottom:1px solid var(--line-2);padding:8px 8px 7px;font-weight:800;font-stretch:85%;font-size:15px;display:flex;justify-content:space-between;align-items:baseline;gap:6px;cursor:pointer}
+.wh .dd{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:400}
+.wh.today{background:var(--accent);color:var(--on-accent)}
+.wh.today .dd{color:var(--on-accent);opacity:.85}
+.wh.corner{cursor:default}
+.hours{position:relative;border-right:1px solid var(--line)}
+.hours span{position:absolute;right:6px;font-family:var(--mono);font-size:11px;color:var(--faint);transform:translateY(-50%)}
+.col{position:relative;border-right:1px solid var(--line);background-image:linear-gradient(to bottom,var(--line) 1px,transparent 1px);background-size:100% calc(var(--hour) * 2)}
+.col:last-child{border-right:0}
+.col.today{background-color:var(--today-col)}
+.blk{position:absolute;border-radius:7px;padding:5px 7px;overflow:hidden;cursor:pointer;border:1px solid transparent;display:flex;flex-direction:column;gap:1px;line-height:1.2;text-align:left;font:inherit}
+.blk .b1{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.blk .b2{font-family:var(--mono);font-size:11px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk.C{background:var(--c-bg);color:var(--c-fg);border-left:4px solid var(--c-bar)}
+.blk.S{background:var(--s-bg);color:var(--s-fg);border-left:4px solid var(--s-bar)}
+.blk.L{background:var(--l-bg);color:var(--l-fg);border-left:4px solid var(--l-bar)}
+.blk.P{background:var(--panel-2);color:var(--text);border:1px solid var(--line-2);border-left:4px solid var(--p-bar)}
+.blk.X,.blk.SP,.blk.N{background:var(--panel-2);color:var(--text);border:1px dashed var(--faint)}
+.blk.opt{background:transparent;color:var(--muted);border:1px dashed var(--faint);border-left-width:4px}
+.blk.opt .b1::after{content:" · opțional";font-weight:400;font-size:11px}
+.blk:hover{filter:brightness(1.18)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12.5px;color:var(--muted);align-items:center}
+.legend .chip{margin-right:4px}
+
+/* reference sections */
+section.ref{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+section.ref h3{margin:0;font-size:18px;font-weight:800;font-stretch:82%}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);font-weight:500}
+td.k{font-family:var(--mono);font-weight:600;white-space:nowrap;color:var(--text)}
+td{color:var(--muted)}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;color:var(--muted)}
+ul.plain b{color:var(--text)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:0;cursor:pointer;display:inline-block;text-decoration:none;font-weight:700;font-size:14px;padding:9px 14px;border-radius:8px;background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line-2)}
+.btn.light{background:var(--on-accent);color:var(--accent)}
+.copied{font-size:13px;color:var(--muted)}
+.linkbox{font-family:var(--mono);font-size:12.5px;color:var(--faint);overflow-wrap:anywhere}
+footer{font-size:12.5px;color:var(--faint)}
+.skins{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:6px}
+.skins .lbl{padding:0 4px 0 0}
+.sk{width:26px;height:26px;border-radius:50%;border:2px solid var(--line-2);cursor:pointer;padding:0}
+.sk[aria-pressed="true"]{border-color:var(--text)}
+.sk.visiniu{background:linear-gradient(135deg,#0D0A0B 50%,#E5484D 50%)}
+.sk.grafit{background:linear-gradient(135deg,#1F2023 50%,#CE2C35 50%)}
+.sk.bordo{background:linear-gradient(135deg,#140C0E 50%,#8E1B2E 50%)}
+@media (max-width:520px){h1{font-size:34px}.stamp{text-align:left}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="eyebrow">UTCN · Automatică și Informatică Aplicată · Sem. I 2026–2027</div>
+      <h1>Orar <span id="h-group">30111</span></h1>
+      <p class="sub" id="h-sub">Anul I</p>
+    </div>
+    <div><div class="stamp" id="stamp"></div></div>
+  </header>
+
+  <!--PWA--><div class="install" id="install" hidden>
+    <p id="install-text"><b>Pune orarul pe telefon.</b> Se deschide ca o aplicație și merge și fără internet.</p>
+    <button class="btn light" id="install-btn" type="button">Instalează</button>
+    <button class="x" id="install-x" type="button" aria-label="Ascunde">×</button>
+  </div><!--/PWA-->
+
+  <div class="controls">
+    <div class="box"><label for="grp">Grupa</label><select id="grp" aria-label="Grupa"></select></div>
+    <div class="box seg" role="group" aria-label="Semigrupa">
+      <span class="lbl">Semigr.</span>
+      <button id="sg1" type="button" aria-pressed="true">1</button>
+      <button id="sg2" type="button" aria-pressed="false">2</button>
+      <span class="only" id="sg-only" hidden>una</span>
+    </div>
+    <div class="weekbox">
+      <div class="box wk">
+        <button class="navbtn" id="prev" type="button" aria-label="Săptămâna anterioară">‹</button>
+        <select id="wk" aria-label="Săptămâna"></select>
+        <button class="navbtn" id="next" type="button" aria-label="Săptămâna următoare">›</button>
+      </div>
+      <button class="btn ghost" id="thisweek" type="button">Azi</button>
+      <div class="box seg view" role="group" aria-label="Mod de afișare">
+        <button id="v-day" type="button" aria-pressed="true">Zi</button>
+        <button id="v-week" type="button" aria-pressed="false">Săptămână</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice" id="notice"></div>
+
+  <div id="dayview" class="narrow">
+    <div class="days-bar" id="daysbar" role="tablist" aria-label="Ziua"></div>
+    <div class="daycard" id="daycard"></div>
+  </div>
+
+  <div id="weekview" hidden>
+    <div class="weekwrap"><div class="wgrid" id="wgrid"></div></div>
+    <div class="legend" style="margin-top:10px"><span><span class="chip C">Curs</span></span><span><span class="chip S">Seminar</span></span><span><span class="chip L">Laborator</span></span><span><span class="chip P">Proiect</span></span><span>Apasă pe o oră ca s-o vezi în detaliu; acolo ai și traseul în Maps.</span></div>
+  </div>
+
+  <div class="narrow">
+    <section class="ref" id="share">
+      <h3>Trimite orarul grupei</h3>
+      <div class="actions">
+        <button class="btn" id="copy" type="button">Copiază linkul grupei</button>
+        <span class="copied" id="copied" hidden>Link copiat</span>
+      </div>
+      <div class="linkbox" id="linkbox"></div>
+    </section>
+
+    <section class="ref">
+      <h3>Materiile grupei</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Cod</th><th>Materie</th><th>Tip</th></tr></thead>
+        <tbody id="subjects"></tbody>
+      </table></div>
+    </section>
+
+    <section class="ref">
+      <h3>Unde sunt sălile</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Sala</th><th>Adresa</th></tr></thead>
+        <tbody>
+          <tr><td class="k">40, F, 356, E15, E17, D11, D12, D21, D22, G1, G2, G6, 320, 329</td><td>Clădirea AC, str. G. Barițiu 26–28</td></tr>
+          <tr><td class="k">P03</td><td>Clădirea AC nouă (Sport), str. G. Barițiu 26</td></tr>
+          <tr><td class="k">H11, H21</td><td>Clădirea Someș Dreapta, etaj 1, str. G. Barițiu 26</td></tr>
+          <tr><td class="k">s3.5, s4.1</td><td>Clădirea Someș Stânga, etajele 3 și 4, str. G. Barițiu 26</td></tr>
+          <tr><td class="k">BT 6.01–6.05, BT 7.01, BT 7.02</td><td>Str. G. Barițiu 6–8</td></tr>
+          <tr><td class="k">152, 192, 197, 211 (LS), 216 (LS), A2, B2</td><td>Clădirea Construcții, str. G. Barițiu 25</td></tr>
+          <tr><td class="k">200–214</td><td>Clădirea AC Observator, str. Observatorului 2, etaj 2</td></tr>
+          <tr><td class="k">301–310, 305B</td><td>Clădirea AC Observator, str. Observatorului 2, etaj 3</td></tr>
+          <tr><td class="k">505, 505B</td><td>Clădirea AC Observator, str. Observatorului 2, etaj 5</td></tr>
+          <tr><td class="k">6, 7</td><td>Clădirea AC Observator, parter</td></tr>
+          <tr><td class="k">467, 479</td><td>Str. C. Daicoviciu 15, etaj 1</td></tr>
+          <tr><td class="k">EM2 (S2)</td><td>Clădirea turn, str. C. Daicoviciu 15</td></tr>
+          <tr><td class="k">Amf. D01, D03, D04, C01–C03, C11–C13, A12</td><td>Str. Dorobanților 71–73 (clădirea din curte)</td></tr>
+          <tr><td class="k">Aula Inst., I204, I205, I109, I110</td><td>B-dul 21 Decembrie 1989 nr. 128–130</td></tr>
+          <tr><td class="k">M201, G112, G114, E112, C408</td><td>B-dul Muncii 103–105</td></tr>
+          <tr><td class="k">Sport</td><td>Complexul de natație Politehnica, Splaiul Independenței</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="ref">
+      <h3>Cum se citește orarul oficial</h3>
+      <ul class="plain">
+        <li><b>C</b> = curs, <b>S</b> = seminar, <b>L</b> = laborator, <b>P</b> = proiect. Cifra din față (2C, 4L) e numărul de ore din planul de învățământ.</li>
+        <li>O căsuță tăiată în diagonală are două activități care alternează. Ce e <b>deasupra</b> liniei se ține în săptămânile <b>impare</b>, ce e <b>dedesubt</b> în săptămânile <b>pare</b>.</li>
+        <li>La master, multe laboratoare au săptămânile scrise în căsuță (de ex. „săpt. 2, 6, 10, 14”). Pagina le arată doar în acele săptămâni.</li>
+        <li>În vizualizarea pe zi, apasă pe o oră ca să deschizi traseul în Google Maps până la clădirea sălii.</li>
+        <li>Săptămâna 1 începe pe 28 septembrie și e impară. Vacanța e între 21 decembrie și 3 ianuarie. Luni 30 noiembrie și marți 1 decembrie sunt libere.</li>
+      </ul>
+    </section>
+
+    <section class="ref">
+      <h3>Orarul oficial</h3>
+      <p class="meta" style="margin:0">Pagina se actualizează automat din fișierul Excel oficial al secției. Dacă ceva nu se potrivește, orarul oficial are prioritate.</p>
+      <div class="actions"><a class="btn ghost" id="srclink" href="#" target="_blank" rel="noopener">Deschide orarul oficial (Excel)</a><a class="btn ghost" href="https://aut.utcluj.ro/index.php/anunturi.ro.html" target="_blank" rel="noopener">Anunțuri Automatică</a></div>
+    </section>
+
+    <footer id="foot">Nu e o pagină oficială UTCN.</footer>
+  </div>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  var DATA=JSON.parse(document.getElementById("data").textContent);
+  (function(){
+    var def=(DATA.meta&&DATA.meta.skin)||"grafit", cur=def;
+    function apply(k){ document.documentElement.setAttribute("data-skin",k); document.querySelectorAll(".sk").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.skin===k);}); var m=document.querySelector('meta[name="theme-color"]'); if(m) m.content=getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); }
+    apply(cur);
+  })();
+  var WEEKS=DATA.weeks;
+  var DAYS=["Luni","Marți","Miercuri","Joi","Vineri"], DSHORT=["Lu","Ma","Mi","Jo","Vi"];
+  var MONTHS=["ian","feb","mar","apr","mai","iun","iul","aug","sept","oct","nov","dec"];
+  var TYPE={C:"Curs",S:"Seminar",L:"Laborator",P:"Proiect",X:"Întâlnire",SP:"Sport"};
+  var HOLI=DATA.holidays||[];
+  var byId={}; DATA.groups.forEach(function(g){byId[g.id]=g;});
+  var $=function(id){return document.getElementById(id);};
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+  function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+  function store(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+  function load(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+  function hh(x){var h=Math.floor(x), m=Math.round((x-h)*60); return h+(m?":"+String(m).padStart(2,"0"):"");}
+
+  // header stamp + source
+  if(DATA.meta && DATA.meta.updated){ $("stamp").innerHTML="Orar oficial actualizat<br><b>"+esc(DATA.meta.updated)+"</b>"; $("foot").textContent="Date preluate automat din orarul oficial (actualizat "+DATA.meta.updated+"). Nu e o pagină oficială UTCN."; }
+  if(DATA.meta && DATA.meta.source) $("srclink").href=DATA.meta.source;
+
+  // selects
+  var sel=$("grp"), lastPage=null, og=null;
+  DATA.groups.forEach(function(g){
+    if(g.page!==lastPage){ og=document.createElement("optgroup"); var P=DATA.pages[g.page]; og.label=P.label+(P.line?" · "+P.line:""); sel.appendChild(og); lastPage=g.page; }
+    var o=document.createElement("option"); o.value=g.id; o.textContent=g.label+(g.sub?" · "+g.sub:""); og.appendChild(o);
+  });
+  var wsel=$("wk");
+  function fillWeeks(){ wsel.innerHTML=""; WEEKS.forEach(function(w,i){ var o=document.createElement("option"); o.value=i; o.textContent="Săpt. "+(i+1)+" · "+(window.innerWidth<480?w[1].split(" – ")[0].replace(/^(\d+)$/,"$1 "+(w[1].split(" ").pop())):w[1].replace(" – ","–")); wsel.appendChild(o); }); }
+  fillWeeks();
+  var lastNarrow=window.innerWidth<480;
+  window.addEventListener("resize",function(){ var n=window.innerWidth<480; if(n!==lastNarrow){ lastNarrow=n; fillWeeks(); wsel.value=wi; } });
+
+  var now=new Date(); now=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  function currentWeek(){
+    for(var i=0;i<WEEKS.length;i++){ var st=parse(WEEKS[i][0]); var en=new Date(st); en.setDate(en.getDate()+6); if(now<=en) return i; }
+    return WEEKS.length-1;
+  }
+  var wi=currentWeek();
+  var inVacation=(function(){var s=parse("2026-12-21"), e=parse("2027-01-03"); return now>=s && now<=e;})();
+  function todayIdx(){ var st=parse(WEEKS[wi][0]); var d=Math.round((now-st)/864e5); return (d>=0 && d<5)?d:-1; }
+  var day=(function(){var t=todayIdx(); if(t>=0) return t; var w=now.getDay(); return (w===0||w===6)?0:0;})();
+  // after Friday: show next week, Monday
+  (function(){ var st=parse(WEEKS[wi][0]); var d=Math.round((now-st)/864e5); if(d>=5 && wi<WEEKS.length-1 && !inVacation){ wi++; day=0; } })();
+
+  function fromHash(){
+    var h=(location.hash||"").replace(/^#/,""); if(!h) return null;
+    var m=h.match(/^(\d{5})(?:-(\d))?(?:\.p(\d+))?$/); if(!m) return null;
+    var cand=DATA.groups.filter(function(g){return g.code===m[1] && g.label.indexOf("(")<0;});
+    if(m[3]) cand=cand.filter(function(g){return String(g.page)===m[3];});
+    return cand.length?{id:cand[0].id, sg:m[2]?+m[2]:null}:null;
+  }
+  var gid=(DATA.groups[0]||{}).id, sg=1;
+  if(byId["3-30111"]) gid="3-30111";
+  var saved=load("orar-aut-group"); if(saved && byId[saved]) gid=saved;
+  if(load("orar-aut-sg")==="2") sg=2;
+  var fh=fromHash(); if(fh){gid=fh.id; if(fh.sg) sg=fh.sg;}
+  var wide=window.matchMedia("(min-width: 900px)");
+  var view=load("orar-aut-view")||(wide.matches?"week":"day");
+
+  function shareHash(g){
+    var dup=DATA.groups.filter(function(x){return x.code===g.code && x.label.indexOf("(")<0;}).length>1;
+    return g.code+(g.sgs.length>1?"-"+sg:"")+(dup?".p"+g.page:"");
+  }
+  function inWeek(e,n){ if(e.w) return e.w.indexOf(n)>=0; if(e.p==="odd") return n%2===1; if(e.p==="even") return n%2===0; return true; }
+  function weekText(e){ if(e.w) return "săpt. "+e.w.join(", "); if(e.p==="odd") return "doar săpt. impare"; if(e.p==="even") return "doar săpt. pare"; return ""; }
+  function dateOf(d){ var st=parse(WEEKS[wi][0]); var x=new Date(st); x.setDate(st.getDate()+d); return x; }
+  function isHoliday(d){ return HOLI.indexOf(iso(dateOf(d)))>=0; }
+  function listFor(g,d,n){ return g.entries.filter(function(e){return e.d===d && e.sg.indexOf(sg)>=0 && inWeek(e,n);}); }
+  function whoText(g,e){ var two=g.sgs.length>1; if(e.n>g.sgs.length) return (e.kind==="C"||e.kind==="X")?"toată seria":"cu alte grupe"; if(e.all) return two?"toată grupa":""; return "semigrupa "+e.sg.join(", "); }
+
+  function renderDay(g,n){
+    // seek bar
+    var bar="";
+    for(var d=0;d<5;d++){
+      var dt=dateOf(d), cnt=isHoliday(d)?0:listFor(g,d,n).length, dots="";
+      for(var k=0;k<Math.min(cnt,6);k++) dots+="<i></i>";
+      var isT=iso(dt)===iso(now);
+      bar+="<button class=\"dbtn"+(isT?" today":"")+(isHoliday(d)?" off":"")+"\" role=\"tab\" aria-selected=\""+(d===day)+"\" data-d=\""+d+"\" type=\"button\"><span class=\"dn\">"+DSHORT[d]+"</span><span class=\"dd\">"+dt.getDate()+" "+MONTHS[dt.getMonth()]+"</span><span class=\"dots\">"+dots+"</span></button>";
+    }
+    $("daysbar").innerHTML=bar;
+    var dt=dateOf(day), html="<div class=\"day-h\"><h2>"+DAYS[day]+"</h2><span class=\"date\">"+dt.getDate()+" "+MONTHS[dt.getMonth()]+" · săpt. "+n+"</span></div>";
+    var list=listFor(g,day,n);
+    if(isHoliday(day)) html+="<div class=\"empty\">Zi liberă (sărbătoare legală).</div>";
+    else if(!list.length) html+="<div class=\"empty\">Nicio oră în ziua asta.</div>";
+    else list.forEach(function(e){
+      var r=e.raw.replace(/\s*\n\s*/g," "); if(r.indexOf(e.title)===0) r=r.slice(e.title.length).trim();
+      var bits=[]; if(e.teacher) bits.push(esc(e.teacher)); var w=whoText(g,e); if(w) bits.push(w); var wt=weekText(e); if(wt) bits.push(wt);
+      var mapsUrl=e.maps?"https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(e.maps):null;
+      html+=(mapsUrl?"<a class=\"ev go"+(e.opt?" opt":"")+"\" href=\""+mapsUrl+"\" target=\"_blank\" rel=\"noopener\" title=\"Traseu în Google Maps până la "+esc(e.place)+"\">":"<div class=\"ev"+(e.opt?" opt":"")+"\">")+"<div class=\"t\">"+hh(e.s)+"–"+hh(e.e)+"<small>"+(e.e-e.s)+(e.e-e.s===1?" oră":" ore")+"</small></div>"+
+        "<div class=\"what "+(e.kind||"")+"\"><div class=\"title\">"+esc(e.title)+(e.kind?" <span class=\"chip "+e.kind+"\">"+TYPE[e.kind]+"</span>":"")+"</div>"+
+        (e.room||e.place?"<div class=\"meta\">"+(e.room?"Sala <b>"+esc(e.room)+"</b>":"")+(e.room&&e.place?" · ":"")+(e.place?esc(e.place):"")+"</div>":"")+
+        (mapsUrl?"<div class=\"maplink\">Traseu în Maps ↗</div>":"")+
+        (r?"<div class=\"raw\">În orar: "+esc(r)+"</div>":"")+
+        (bits.length?"<div class=\"meta\">"+bits.join(" · ")+"</div>":"")+
+        (e.opt?"<div class=\"note\">"+esc(e.opt)+"</div>":"")+(e.lang?"<div class=\"note\">"+esc(e.lang)+"</div>":"")+
+        "</div>"+(mapsUrl?"</a>":"</div>");
+    });
+    $("daycard").innerHTML=html;
+  }
+
+  function renderWeek(g,n){
+    var H0=8, H1=22, hpx=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour"))||46;
+    var html="<div class=\"wh corner\"></div>";
+    for(var d=0;d<5;d++){ var dt=dateOf(d), isT=iso(dt)===iso(now); html+="<div class=\"wh"+(isT?" today":"")+"\" data-d=\""+d+"\" role=\"button\" tabindex=\"0\">"+DAYS[d]+"<span class=\"dd\">"+dt.getDate()+" "+MONTHS[dt.getMonth()]+"</span></div>"; }
+    var hours="<div class=\"hours\" style=\"height:"+((H1-H0)*hpx)+"px\">";
+    for(var h=H0+1;h<H1;h++) if(h%2===0) hours+="<span style=\"top:"+((h-H0)*hpx)+"px\">"+h+"</span>";
+    html+=hours+"</div>";
+    for(d=0;d<5;d++){
+      var dt2=dateOf(d), list=isHoliday(d)?[]:listFor(g,d,n);
+      // lanes for overlaps
+      var lanes=[]; list.forEach(function(e){ var L=0; while(lanes[L] && lanes[L].some(function(o){return o.s<e.e && e.s<o.e;})) L++; (lanes[L]=lanes[L]||[]).push(e); e._lane=L; });
+      var nl=Math.max(1,lanes.length);
+      html+="<div class=\"col"+(iso(dt2)===iso(now)?" today":"")+"\" style=\"height:"+((H1-H0)*hpx)+"px\">";
+      if(isHoliday(d)) html+="<div class=\"blk N\" style=\"top:8px;left:6px;right:6px;height:60px;cursor:default\"><span class=\"b1\">Zi liberă</span></div>";
+      list.forEach(function(e,i){
+        var top=(Math.max(e.s,H0)-H0)*hpx+2, ht=(Math.min(e.e,H1)-Math.max(e.s,H0))*hpx-4;
+        var w=100/nl, left="calc("+(e._lane*w)+"% + 4px)", width="calc("+w+"% - 8px)";
+        var name=e.acr&&e.title.length>18?e.acr:e.title;
+        var line2=hh(e.s)+"–"+hh(e.e)+(e.room?" · "+e.room:"");
+        var wt=weekText(e);
+        html+="<button type=\"button\" class=\"blk "+(e.kind||"N")+(e.opt?" opt":"")+"\" data-d=\""+d+"\" data-i=\""+i+"\" style=\"top:"+top+"px;height:"+ht+"px;left:"+left+";width:"+width+"\" title=\""+esc(e.title+" · "+line2+(wt?" · "+wt:""))+"\"><span class=\"b1\">"+esc(name)+"</span><span class=\"b2\">"+esc(line2)+"</span>"+(ht>70&&wt?"<span class=\"b2\">"+esc(wt)+"</span>":"")+"</button>";
+      });
+      html+="</div>";
+    }
+    $("wgrid").innerHTML=html;
+  }
+
+  function render(){
+    var g=byId[gid]; if(!g) return;
+    if(g.sgs.indexOf(sg)<0) sg=g.sgs[0];
+    var P=DATA.pages[g.page], two=g.sgs.length>1, n=wi+1, odd=n%2===1;
+    sel.value=gid; wsel.value=wi;
+    $("h-group").textContent=g.label;
+    $("h-sub").textContent=P.title+(g.sub?" · "+g.sub:"")+(two?" · semigrupa "+sg:"");
+    $("sg1").hidden=!two; $("sg2").hidden=!two; $("sg-only").hidden=two;
+    $("sg1").setAttribute("aria-pressed",sg===1); $("sg2").setAttribute("aria-pressed",sg===2);
+    $("prev").disabled=wi===0; $("next").disabled=wi===WEEKS.length-1;
+    $("v-day").setAttribute("aria-pressed",view==="day"); $("v-week").setAttribute("aria-pressed",view==="week");
+    $("dayview").hidden=view!=="day"; $("weekview").hidden=view!=="week";
+    document.title="Orar "+g.label+" · săpt. "+n;
+    var msg="<div>Săptămâna <b>"+n+"</b> ("+WEEKS[wi][1]+") <span class=\"parity\">"+(odd?"impară":"pară")+"</span>. Orele opționale sau facultative au contur punctat.</div>";
+    if(inVacation && wi===12) msg="<div class=\"warn\">Acum e vacanță (21 dec – 3 ian). Mai jos e prima săptămână de după vacanță.</div>"+msg;
+    (P.notes||[]).forEach(function(t){msg+="<div class=\"warn\">"+esc(t)+"</div>";});
+    $("notice").innerHTML=msg;
+    if(view==="day") renderDay(g,n); else renderWeek(g,n);
+
+    // subjects
+    var seen={}, keys=[];
+    g.entries.forEach(function(e){
+      if(e.kind==="X"||e.kind==="SP") return;
+      var k=(e.title||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+      if(!seen[k]){seen[k]={acr:e.acr||"",title:e.title,types:{}};keys.push(k);}
+      if(e.kind) seen[k].types[TYPE[e.kind]]=1; if(!seen[k].acr && e.acr) seen[k].acr=e.acr;
+    });
+    $("subjects").innerHTML=keys.map(function(k){var s=seen[k]; return "<tr><td class=\"k\">"+esc(s.acr||"—")+"</td><td>"+esc(s.title)+"</td><td>"+Object.keys(s.types).join(", ")+"</td></tr>";}).join("");
+
+    var h=shareHash(g); var base=location.href.split("#")[0];
+    $("linkbox").textContent=base+"#"+h;
+    try{ if(location.hash!=="#"+h) history.replaceState(null,"","#"+h);}catch(e){}
+    store("orar-aut-group",gid); store("orar-aut-sg",String(sg));
+  }
+
+  // events
+  sel.addEventListener("change",function(){gid=sel.value; render();});
+  wsel.addEventListener("change",function(){wi=+wsel.value; inVacation=false; render();});
+  $("sg1").onclick=function(){sg=1;render();};
+  $("sg2").onclick=function(){sg=2;render();};
+  $("prev").onclick=function(){if(wi>0){wi--;inVacation=false;render();}};
+  $("next").onclick=function(){if(wi<WEEKS.length-1){wi++;inVacation=false;render();}};
+  $("thisweek").onclick=function(){wi=currentWeek(); var t=todayIdx(); day=t>=0?t:0; render();};
+  $("v-day").onclick=function(){view="day"; store("orar-aut-view",view); render();};
+  $("v-week").onclick=function(){view="week"; store("orar-aut-view",view); render();};
+  $("daysbar").addEventListener("click",function(ev){var b=ev.target.closest(".dbtn"); if(!b) return; day=+b.dataset.d; render();});
+  $("wgrid").addEventListener("click",function(ev){var b=ev.target.closest("[data-d]"); if(!b) return; day=+b.dataset.d; view="day"; render(); $("dayview").scrollIntoView({behavior:"smooth",block:"start"});});
+  $("wgrid").addEventListener("keydown",function(ev){if(ev.key==="Enter"){var b=ev.target.closest(".wh[data-d]"); if(b){day=+b.dataset.d; view="day"; render();}}});
+  document.addEventListener("keydown",function(ev){
+    if(view!=="day"||/select|input/i.test((ev.target.tagName||""))) return;
+    if(ev.key==="ArrowRight"){ if(day<4) day++; else if(wi<WEEKS.length-1){wi++;day=0;} render(); }
+    if(ev.key==="ArrowLeft"){ if(day>0) day--; else if(wi>0){wi--;day=4;} render(); }
+  });
+  // swipe between days
+  (function(){
+    var x0=null,y0=null,card=$("daycard");
+    card.addEventListener("touchstart",function(e){var t=e.touches[0]; x0=t.clientX; y0=t.clientY;},{passive:true});
+    card.addEventListener("touchend",function(e){
+      if(x0===null) return; var t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0; x0=null;
+      if(Math.abs(dx)<60 || Math.abs(dx)<Math.abs(dy)*1.5) return;
+      if(dx<0){ if(day<4) day++; else if(wi<WEEKS.length-1){wi++;day=0;} }
+      else { if(day>0) day--; else if(wi>0){wi--;day=4;} }
+      render();
+    },{passive:true});
+  })();
+  window.addEventListener("hashchange",function(){var f=fromHash(); if(f){gid=f.id; if(f.sg) sg=f.sg; render();}});
+  $("copy").onclick=function(){
+    var t=$("linkbox").textContent, ok=function(){var c=$("copied"); c.hidden=false; setTimeout(function(){c.hidden=true;},2000);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents($("linkbox")); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);};
+    try{navigator.clipboard.writeText(t).then(ok,fallback);}catch(e){fallback();}
+  };
+  /*PWA*/
+  (function(){
+    var box=$("install"); if(!box) return;
+    var standalone=window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone===true;
+    if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(function(){}); }
+    if(standalone||load("orar-aut-install-x")==="1") return;
+    var deferred=null, btn=$("install-btn"), txt=$("install-text");
+    window.addEventListener("beforeinstallprompt",function(e){e.preventDefault(); deferred=e; box.hidden=false;});
+    var ios=/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+    if(ios){ box.hidden=false; btn.hidden=true; txt.innerHTML="<b>Pune orarul pe telefon.</b> În Safari apasă <b>Partajează</b> (pătratul cu săgeată), apoi <b>Adaugă pe ecranul principal</b>."; }
+    btn.onclick=function(){ if(!deferred) return; deferred.prompt(); deferred.userChoice.then(function(){deferred=null; box.hidden=true;}); };
+    window.addEventListener("appinstalled",function(){box.hidden=true;});
+    $("install-x").onclick=function(){box.hidden=true; store("orar-aut-install-x","1");};
+  })();
+  /*/PWA*/
+  render();
+})();
+</script>
+<noscript><p style="padding:16px;color:#F4EDEE">Pagina are nevoie de JavaScript ca să afișeze orarul.</p></noscript>
+</body>
+</html>

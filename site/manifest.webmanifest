@@ -1,0 +1,29 @@
+{
+  "name": "Orar Automatică UTCN",
+  "short_name": "Orar AUT",
+  "description": "Orarul grupelor de la Automatică și Informatică Aplicată, UTCN, semestrul I 2026–2027.",
+  "lang": "ro",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0F1011",
+  "theme_color": "#0F1011",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

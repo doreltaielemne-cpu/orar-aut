@@ -1,0 +1,97 @@
+{
+  "source_url": "https://didatec-my.sharepoint.com/:x:/g/personal/iulia_stefan_campus_utcluj_ro/IQBvxXDDB6pWT4IXYVSygc5EAbsObMVYUC6KHcblr3n-Kl4?e=r3qyt6",
+  "weeks": [
+    [
+      "2026-09-28",
+      "28 sept – 2 oct"
+    ],
+    [
+      "2026-10-05",
+      "5 – 9 oct"
+    ],
+    [
+      "2026-10-12",
+      "12 – 16 oct"
+    ],
+    [
+      "2026-10-19",
+      "19 – 23 oct"
+    ],
+    [
+      "2026-10-26",
+      "26 – 30 oct"
+    ],
+    [
+      "2026-11-02",
+      "2 – 6 nov"
+    ],
+    [
+      "2026-11-09",
+      "9 – 13 nov"
+    ],
+    [
+      "2026-11-16",
+      "16 – 20 nov"
+    ],
+    [
+      "2026-11-23",
+      "23 – 27 nov"
+    ],
+    [
+      "2026-11-30",
+      "2 – 4 dec"
+    ],
+    [
+      "2026-12-07",
+      "7 – 11 dec"
+    ],
+    [
+      "2026-12-14",
+      "14 – 18 dec"
+    ],
+    [
+      "2027-01-04",
+      "4 – 8 ian"
+    ],
+    [
+      "2027-01-11",
+      "11 – 15 ian"
+    ]
+  ],
+  "vacation": [
+    "2026-12-21",
+    "2027-01-03"
+  ],
+  "holidays": [
+    "2026-11-30",
+    "2026-12-01"
+  ],
+  "notes": {
+    "AN I En": [
+      "În orarul oficial, două coloane au eticheta „30313”. A doua apare aici ca „30313 (a doua coloană)”; probabil este 30314."
+    ],
+    "AN II": [
+      "Pedagogie II 2C: joi, ora 8-10 sau 10-12 sau 12-14, sala 206, str. Daicoviciu 15, Blocul Turn, etaj II."
+    ],
+    "AN II En": [
+      "Pedagogie II 2C: joi, ora 8-10 sau 10-12 sau 12-14, sala 206, str. Daicoviciu 15, Blocul Turn, etaj II."
+    ],
+    "AN IV": [
+      "Autonomous Driving (Bosch Engineering Center Cluj) 2C H11, marți 18-20. Laborator în sala BT 6.01 (Bosch): joi 14-16; vineri 12-14 și 14-16.",
+      "Orarul anului IV are multe căsuțe împărțite pe diagonală. Dacă o oră pare ciudată, verifică în orarul oficial."
+    ],
+    "AN IV En": [
+      "Autonomous Driving (Bosch Engineering Center Cluj) 2C H11, Tuesday 18-20. Lab in BT 6.01 (Bosch lab): Thursday 14-16; Friday 12-14 and 14-16."
+    ],
+    "MASTER AN I": [
+      "La master, laboratoarele au săptămâni proprii, scrise în căsuță. Pagina le arată doar în săptămânile menționate.",
+      "Orarul de master are căsuțe greu de interpretat automat. Verifică în orarul oficial înainte să te bazezi pe o oră anume."
+    ],
+    "MASTER AN II": [
+      "La master, laboratoarele au săptămâni proprii, scrise în căsuță. Pagina le arată doar în săptămânile menționate.",
+      "Orarul de master are căsuțe greu de interpretat automat. Verifică în orarul oficial înainte să te bazezi pe o oră anume."
+    ]
+  },
+  "overrides": [],
+  "skin": "grafit"
+}
